@@ -1,0 +1,35 @@
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script >
+    $('#form11').click(function (e) {
+      console.log("save button clickd");
+    });
+    let nm=$("id1").val("approve");
+    let csr=$("input[name=csrfmiddlewaretoken").val();
+    mydata={approve:nm,csrfmiddlewaretoken:csr }
+    $.ajax({
+      url:"{% url 'savedata'%}",
+      method:"POST",
+      data:mydata,
+      success: function(data){
+        console.log(data);
+      },
+    })
+
+</script>
+data1=""
+            data2=""
+            if request.POST.get('send1'):
+                en=application_model.objects.get(application_id=user_id)
+                en.status='Approved'
+                en.save()        
+                data1=en.status
+                # stud=application_model.objects.values()
+                # student_data=list(stud)
+            elif request.POST.get('send2'):
+                en=application_model.objects.get(application_id=user_id)
+                en.status='Disapproved'
+                en.save()        
+                data2=en.status
+
+
+                

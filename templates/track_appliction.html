@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container mt-3">  
+    <h1 class="text-center alert alert-danger">Application Status <a href="{% url 'studentdashbord' %}"><button type="submit" align="right" class="btn btn-primary">Dashbord</button></a></h1>
+    <div class="row">
+    <div class="col-sm-4">
+      <form method="POST" style="width:100%" >
+       
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert" align="center" id="message">
+          <strong>{{message}}<h3>{{key}}</h3></strong>
+          <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden=""></span>
+          </button>
+          </div>
+        {% endif %}
+        {% if 'error' in message.tags %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" align="center" >
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-dismiss="alert">
+        <span aria-hidden=""></span>
+        </button>
+        </div>  
+        {% endif %}
+        {% endfor %}
+        {% csrf_token %}  
+        {% comment %} <div class="input-group flex-nowrap" style="width:25%">
+        <span class="input-group-text" id="addon-wrapping">Appliction number:</span>
+        <input type="integrity" class="form-control" placeholder="Enter your Application number" name="application_id_student" aria-describedby="addon-wrapping">
+      </div>
+      <br> {% endcomment %}
+        {{form}}
+        <br>
+      <button class="btn btn-primary" type="submit" >Submit</button>
+    </form>
+    <br>
+    <a href="{% url 'studentdashbord' %}"><button type="submit" class="btn btn-primary">Dashbord</button></a>
+    </div>
+    <div class="col-sm-8">
+    <table class="table table-striped" style="width:100%" >
+      <thead>
+      
+        <tr>
+          {% comment %} <div align="right"><a href="{% url 'user_logout' %}"><button type="submit" class="btn btn-primary"  >logout</button></a></div> {% endcomment %}
+          <th scope="col">id</th>
+          <th scope="col">University name</th>
+          <th scope="col">Program name</th>
+          <th scope="col">studey mode</th>
+          <th scope="col">Customer</th>
+          {% comment %} <th scope="col">Status</th> {% endcomment %}
+          <th scope="col">Select</th> 
+        </tr>
+      </thead>
+  {% comment %} {% for student in info %}<br><br>
+    {{ student.application_id}}
+    {{ student.university_name }}
+    {{ student.program_name }}
+    {{ student.study_mode }}
+    {{student.customer}}
+    {% endfor %}  {% endcomment %}
+  
+  <tbody id="tbody">
+    {% for student in info %}
+    <form method="POST" id="form2" >
+      {% csrf_token %}  
+      <tr>
+        <from>
+      
+        <td><input type="text" align="center" size="1%" class="form-control-plaintext" id=""  name="main_id" value="{{student.application_id}}" readonly >
+        {% comment %} <td>{{ student.application_id}}</td> {% endcomment %}
+    
+        <td>{{ student.university_name }}</td>
+    
+        <td>{{ student.program_name }}</td>
+      
+    
+        <td>{{ student.study_mode}}</td>
+          
+    
+        <td>{{ student.customer }}</td>
+        {% comment %} <td><b>{% if student.status %}
+                  {% if student.status == 'Approved' %}
+                    <div style="background-color:#98FB98;">{{student.status}}</div>
+                  {% else %}
+                  <div style="background-color:#FFCCCB;">{{student.status}}</div>
+                  {% endif %}
+                {% else %}
+                    Pending
+                {% endif %}  <b></td> {% endcomment %}
+      
+        
+        {% comment %} <td>{{ from.as_p }}</td>  {% endcomment %}
+        {% comment %} <td><button type="submit" onclick="this.form.submit();this.disabled = true;"  class="btn btn-primary" value="1" name="send1">submit</button></td>  {% endcomment %}
+        {% comment %} </form> {% endcomment %}
+        {% comment %} onclick="this.disabled = true"  {% endcomment %}
+        {% comment %} <td><button type="submit" class="btn btn-success" value="1" onclick="this.disabled = ;" name="send1">Approve</button></td>
+        <td><button type="submit" class="btn btn-danger" value="2" name="send2" >Disapprove</button></td>  {% endcomment %}
+    
+        <td style="width:25%" id="td11" >
+          {% if student.status == 'Approved' %}
+              <button type="submit" disabled="disabled" id="main1" class="btn btn-success"  >Approve</button>
+          {% elif student.status == 'Disapproved' %}
+            <button type="submit"  disabled="disabled"  id="id2" class="btn btn-danger"  >Disapprove</button>
+
+          {% else%}
+          <button type="submit"  disabled="disabled"  id="id2" class="btn btn-info"  >Pending</button>
+          {% endif  %}
+        </td>
+      </form> 
+      </tr> 
+      </form>
+      {% endfor %}
+    </tbody>  
+    
+    </table>
+  </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
